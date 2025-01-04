@@ -4,7 +4,7 @@ from sklearn.impute import IterativeImputer
 
 df = pl.read_csv("../data/semi_final.csv")
 
-imputer = IterativeImputer(max_iter=100000, min_value=0, n_nearest_features=10)
+imputer = IterativeImputer(max_iter=1000, min_value=0, n_nearest_features=20)
 imputer.fit(df)
 
 data = imputer.transform(df)

@@ -7,15 +7,14 @@ schema = {
     "average_working_hours": pl.String,
     "daily_caloric_intake": pl.String,
 }
-df = pl.read_csv("../data/starting.csv", try_parse_dates=True, schema_overrides=schema)
+df = pl.read_csv("../data/starting.csv", schema_overrides=schema)
 df = df.select(
     pl.col("year"),
     pl.col("life_expectancy").str.replace_all(",", ".").cast(pl.Float64).round(2),
     pl.col("Real GDP (at market prices) (BoE (2017))").alias("gdp"),
     pl.col("Real GDP recent")
     .str.replace_all(",", ".")
-    .cast(pl.Float64)
-    .round(2)
+    .cast(pl.Int64)
     .alias("gdp_recent"),
     pl.col("public_health_expenditure_pc_gdp")
     .str.replace_all(",", ".")

@@ -4,7 +4,7 @@ from sklearn.impute import IterativeImputer
 
 df = pl.read_csv("../data/semi_final.csv")
 
-imputer = IterativeImputer(random_state=100, max_iter=100)
+imputer = IterativeImputer(max_iter=100000, min_value=0, n_nearest_features=10)
 imputer.fit(df)
 
 data = imputer.transform(df)
@@ -23,5 +23,9 @@ imputed_df = imputed_df.select(
     pl.col("ww2").cast(pl.Int64),
     pl.col("lighting_price").round(2),
 )
-imputed_df
+# imputed_df.select(
+#     pl.col("relative_health_expenditure"),
+#     pl.col("average_working_hours"),
+#     pl.col("lighting_price"),
+# )
 imputed_df.write_csv("../data/final.csv")

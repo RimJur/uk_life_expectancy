@@ -1,11 +1,17 @@
 import polars as pl
 from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer
+from sklearn.ensemble import RandomForestRegressor
 
 df = pl.read_csv("../data/semi_final.csv")
 
-imputer = IterativeImputer(max_iter=1000, min_value=0, n_nearest_features=20)
+regressor = RandomForestRegressor(n_estimators=100, random_state=42)
+
+imputer = IterativeImputer(
+    estimator=regressor, max_iter=1000, min_value=0, n_nearest_features=5
+)
 imputer.fit(df)
+
 
 data = imputer.transform(df)
 
@@ -23,9 +29,9 @@ imputed_df = imputed_df.select(
     pl.col("ww2").cast(pl.Int64),
     pl.col("lighting_price").round(2),
 )
-# imputed_df.select(
-#     pl.col("relative_health_expenditure"),
-#     pl.col("average_working_hours"),
-#     pl.col("lighting_price"),
-# )
-imputed_df.write_csv("../data/final.csv")
+imputed_df.select(
+    pl.col("relative_health_expenditure"),
+    pl.col("average_working_hours"),
+    pl.col("lighting_price"),
+)
+# imputed_df.write_csv("../data/final.csv")

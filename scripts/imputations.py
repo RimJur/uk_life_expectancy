@@ -5,13 +5,12 @@ from sklearn.ensemble import RandomForestRegressor
 
 df = pl.read_csv("../data/semi_final.csv")
 
-regressor = RandomForestRegressor(n_estimators=100, random_state=42)
+regressor = RandomForestRegressor(n_estimators=100)
 
 imputer = IterativeImputer(
-    estimator=regressor, max_iter=1000, min_value=0, n_nearest_features=5
+    estimator=regressor, max_iter=10, min_value=0, n_nearest_features=3
 )
 imputer.fit(df)
-
 
 data = imputer.transform(df)
 

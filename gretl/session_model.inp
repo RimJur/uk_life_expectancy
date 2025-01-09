@@ -1,0 +1,221 @@
+# Log started 2025-01-09 18:27
+# Record of session commands.  Please note that this will
+# likely require editing if it is to be run as a script.
+open /home/rimgaudas/Documents/uk_life_expectancy/data/final.csv
+# model 1
+ols life_expectancy 0 gdp relative_health_expenditure urbanization_rate \
+  daily_caloric_intake average_working_hours child_mortality ww1 ww2 \
+  lighting_price
+gnuplot  gdp --time-series --with-lines
+adf 13 gdp --c --test-down=AIC
+adf 13 gdp --c --ct --test-down=AIC
+kpss 4 gdp
+kpss 4 gdp --trend
+adf 13 relative_health_expenditure --c --test-down=AIC
+adf 13 urbanization_rate --c --test-down=AIC
+gnuplot  urbanization_rate --time-series --with-lines
+adf 13 daily_caloric_intake --c --test-down=AIC
+adf 13 average_working_hours --c --test-down=AIC
+gnuplot child_mortality --time-series --with-lines
+adf 13 child_mortality --c --test-down=AIC
+adf 13 ww1 --c --test-down=AIC
+adf 13 lighting_price --c --test-down=AIC
+diff life_expectancy
+diff gdp
+diff relative_health_expenditure
+diff urbanization_rate
+adf 13 daily_caloric_intake --c --test-down=AIC
+diff daily_caloric_intake
+diff average_working_hours
+diff child_mortality
+diff lighting_price
+adf 13 d_life_expectancy --c --test-down=AIC
+gnuplot  d_life_expectancy d_gdp d_relative_health_expenditure \
+  d_urbanization_rate d_daily_caloric_intake d_average_working_hours \
+  d_child_mortality d_lighting_price --time-series --with-lines
+gnuplot  d_relative_health_expenditure d_urbanization_rate \
+  d_daily_caloric_intake d_average_working_hours d_child_mortality \
+  d_lighting_price --time-series --with-lines
+adf 13 d_life_expectancy --c --test-down=AIC
+kpss 4 d_life_expectancy --trend
+adf 13 d_gdp --c --test-down=AIC
+gnuplot  d_gdp --time-series --with-lines
+adf 13 d_relative_health_expenditure --c --test-down=AIC
+kpss 4 d_relative_health_expenditure --trend
+gnuplot  d_relative_health_expenditure --time-series --with-lines
+kpss 4 d_relative_health_expenditure --trend
+kpss 4 d_relative_health_expenditure
+# model 2
+ols d_life_expectancy 0 ww1 ww2 d_gdp d_relative_health_expenditure \
+  d_urbanization_rate d_daily_caloric_intake d_average_working_hours \
+  d_child_mortality d_lighting_price
+genr time
+# model 3
+ols d_life_expectancy 0 ww1 ww2 d_gdp d_relative_health_expenditure \
+  d_urbanization_rate d_daily_caloric_intake d_average_working_hours \
+  d_child_mortality d_lighting_price time
+vif
+bkw
+vif
+bkw
+# model 2
+vif
+bkw
+# model 3
+reset
+modtest --white
+modtest --normality
+# model 4
+ols d_life_expectancy 0 ww1 ww2 d_gdp(-4) \
+  d_relative_health_expenditure(-3) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_average_working_hours(-3) \
+  d_child_mortality d_lighting_price(-1)
+# model 5
+ols d_life_expectancy 0 ww1 ww2 d_gdp(-5) \
+  d_relative_health_expenditure(-3) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_average_working_hours(-1) \
+  d_child_mortality(-1) d_lighting_price(-1)
+# model 6
+ols d_life_expectancy 0 ww1 ww2 d_gdp(-5) \
+  d_relative_health_expenditure(-3) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_average_working_hours(-4) \
+  d_child_mortality(-1) d_lighting_price(-1)
+# model 7
+ols d_life_expectancy 0 ww1 ww2 d_gdp(-5) \
+  d_relative_health_expenditure(-3) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_average_working_hours(-2) \
+  d_child_mortality(-1) d_lighting_price(-1)
+# model 8
+ols d_life_expectancy 0 ww1 ww2 d_gdp(-4) \
+  d_relative_health_expenditure(-3) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_average_working_hours(-2) \
+  d_child_mortality d_lighting_price(-1)
+# model 9
+ols d_life_expectancy 0 ww1 ww2 d_gdp(-4) \
+  d_relative_health_expenditure(-2) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_average_working_hours(-2) \
+  d_child_mortality d_lighting_price(-1)
+# model 10
+ols d_life_expectancy 0 ww1 ww2 d_gdp(-4) \
+  d_relative_health_expenditure(-3) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_average_working_hours(-2) \
+  d_lighting_price(-1)
+# model 11
+ols d_life_expectancy 0 ww1 ww2 d_gdp(-4) \
+  d_relative_health_expenditure(-3) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_child_mortality d_lighting_price(-1)
+# model 8
+modtest --breusch-pagan --robust
+modtest --normality
+series uhat8 = $uhat
+adf 13 uhat8 --c --test-down=AIC
+kpss 4 uhat8
+# model 12
+ols d_life_expectancy 0 ww1 ww2 gdp relative_health_expenditure \
+  urbanization_rate daily_caloric_intake average_working_hours \
+  child_mortality lighting_price
+series uhat12 = $uhat
+adf 13 uhat12 --c --test-down=AIC
+kpss 4 uhat12
+# model 8
+modtest --normality
+modtest --autocorr 1
+vif
+bkw
+dataset addobs 3
+qqplot d_life_expectancy
+normtest d_life_expectancy --all
+logs life_expectancy
+diff l_life_expectancy
+# model 13
+ols d_l_life_expectancy 0 ww1 ww2 d_gdp(-4) \
+  d_relative_health_expenditure(-3) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_average_working_hours(-2) \
+  d_child_mortality d_lighting_price(-1)
+qqplot d_l_life_expectancy
+normtest d_l_life_expectancy --all
+diff d_l_life_expectancy
+qqplot d_d_l_life_expectancy
+normtest d_d_l_life_expectancy --all
+diff d_d_l_life_expectancy
+qqplot d_d_d_l_life_expectancy
+gnuplot  d_d_d_l_life_expectancy d_d_l_life_expectancy --time-series \
+  --with-lines
+delete d_d_l_life_expectancy d_d_d_l_life_expectancy
+series perc_life_expectancy=100*(life_expectancy/life_expectancy(-1)-1)
+gnuplot  perc_life_expectancy --time-series --with-lines
+delete perc_life_expectancy
+series perc_life_expectancy=100*log(life_expectancy/life_expectancy(-1))
+gnuplot  l_life_expectancy d_l_life_expectancy perc_life_expectancy \
+  --time-series --with-lines
+gnuplot  l_life_expectancy --time-series --with-lines
+gnuplot  d_l_life_expectancy --time-series --with-lines
+gnuplot  life_expectancy --time-series --with-lines
+# model 8
+chow 1945
+adf 13 d_l_life_expectancy --c --test-down=AIC
+kpss 4 d_l_life_expectancy
+adf 13 d_life_expectancy --c --test-down=AIC
+kpss 4 d_life_expectancy
+normtest d_life_expectancy --all
+qqplot life_expectancy
+normtest life_expectancy --all
+normtest d_life_expectancy --all
+normtest life_expectancy --all
+delete uhat12
+normtest uhat8 --all
+gnuplot  uhat8 --time-series --with-lines
+series split = NA
+# model 14
+ols d_life_expectancy 0 ww1 ww2 d_gdp(-4) \
+  d_relative_health_expenditure(-3) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_average_working_hours(-2) \
+  d_child_mortality d_lighting_price(-1) split
+delete split
+# model 8
+modtest --white
+modtest --breusch-pagan
+vif
+bkw
+modtest --autocorr 3
+modtest --autocorr 8
+# model 15
+ols d_life_expectancy 0 ww1 ww2 d_gdp(-4) \
+  d_relative_health_expenditure(-3) d_urbanization_rate(-3) \
+  d_daily_caloric_intake(-1) d_average_working_hours(-2) \
+  d_child_mortality d_lighting_price(-1) --robust
+var 1 d_life_expectancy d_child_mortality ; d_daily_caloric_intake(-1) \
+  d_average_working_hours(-2) d_lighting_price(-1) \
+  d_urbanization_rate(-3) d_relative_health_expenditure(-3) d_gdp(-4) \
+  --trend
+var 1 d_life_expectancy d_child_mortality --trend
+var 24 d_life_expectancy d_child_mortality --lagselect --trend
+var 2 d_life_expectancy d_daily_caloric_intake --lagselect --trend
+var 24 d_life_expectancy d_daily_caloric_intake --lagselect --trend
+var 1 d_life_expectancy d_daily_caloric_intake --trend
+var 2 d_life_expectancy d_daily_caloric_intake --trend
+var 3 d_life_expectancy d_daily_caloric_intake --trend
+modtest 1 --autocorr
+modtest 12 --autocorr
+modtest 12 --autocorr
+modtest 12 --autocorr
+modtest 12 --arch
+modtest 12 --arch
+modtest 12 --arch
+modtest 12 --arch
+modtest --normality
+modtest --normality
+modtest --normality
+modtest --normality
+modtest --normality
+modtest --normality
+series gdp__ = NA
+delete gdp__
+gdp_=gdp/10000
+diff gdp_
+# model 16
+ols d_life_expectancy 0 ww1 ww2 d_relative_health_expenditure(-3) \
+  d_urbanization_rate(-3) d_daily_caloric_intake(-1) \
+  d_average_working_hours(-2) d_child_mortality d_lighting_price(-1) \
+  d_gdp_(-4) --robust
+# store "/home/rimgaudas/Desktop/model.gdt" --gzipped=1

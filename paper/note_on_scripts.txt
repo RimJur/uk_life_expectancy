@@ -1,0 +1,2 @@
+All scripts and data sources are listed in here:
+https://github.com/RimJur/uk_life_expectancy/tree/main

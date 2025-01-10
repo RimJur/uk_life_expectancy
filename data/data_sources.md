@@ -5,7 +5,7 @@
 - Real_gdp_recent: https://fred.stlouisfed.org/series/NGDPRXDCGBA
 - Public_health_expenditure: https://ourworldindata.org/grapher/public-health-expenditure-share-gdp?country=~GBR
 - Public_health_exependiture: https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/healthcaresystem/bulletins/ukhealthaccounts/2022and2023
-- Urbanization_rate: https://ourworldindata.org/grapher/urban-area-long-term
+- Urbanization_rate: https://ourworldindata.org/urbanization
 - Daily_caloric_intake: https://ourworldindata.org/grapher/daily-per-capita-caloric-supply
 - Average_working_hours: https://ourworldindata.org/working-more-than-ever
 - Child_mortality_rate: https://ourworldindata.org/grapher/child-mortality?country=~GBR
